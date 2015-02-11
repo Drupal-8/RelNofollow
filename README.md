@@ -6,4 +6,5 @@ INstallation
 -------------------------------
 
 Download RelNofollow and move **kyna** folder inside yout **/modules** directory.
+
 Example: **/var/www/Drupal8/modules/kyna/***
