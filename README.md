@@ -10,3 +10,5 @@ INstallation
 Example: **/var/www/Drupal8/modules/kyna/**
 
 2) Enable the module from your admin panel. You can find the module by her name: **RelNofollow**.
+
+It's O.K. now.
