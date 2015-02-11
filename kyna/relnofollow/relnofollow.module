@@ -1,0 +1,78 @@
+<?php
+
+/**
+ * @file
+ * Contains relnofollow.module
+ */
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/*
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function relnofollow_node_presave($node) {
+
+  if ($node->getType() == 'article') {
+    $dom = new \DOMDocument;
+
+    // <?xml encoding="UTF-8"> is a hack that fix the DOMDocument UTF-8 encoding
+    $dom->loadHTML('<?xml encoding="UTF-8">' . $node->body->value, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+    // Remove <?xml encoding="UTF-8">, we just needed it in the loadHTML method and don't want it in the output
+    foreach ($dom->childNodes as $item) {
+      if ($item->nodeType == XML_PI_NODE) {
+          $dom->removeChild($item);
+      }
+    }
+
+    $links = $dom->getElementsByTagName('a');
+
+    foreach ($links as $link) {
+      $rel = array();
+
+      if ($link->hasAttribute('rel') && ($relAtt = $link->getAttribute('rel')) !== '') {
+          $rel = preg_split('/\s+/', trim($relAtt));
+      }
+
+      // Get the content of the href, split it, keep the domain name and TLD and merge it
+      preg_match('/(?:https?:\/\/)?(?:www\.)?(.*?)\//', $link->getAttribute('href'), $matches);
+      $linkHref = explode('.', $matches[1]);
+      $linkHref = implode('.', array_slice($linkHref, -2));
+
+      if (in_array('nofollow', $rel) || $linkHref == \Drupal::request()->server->get('HTTP_HOST')) {
+        continue;
+      }
+
+      $rel[] = 'nofollow';
+      $link->setAttribute('rel', implode(' ', $rel));
+    }
+
+    $node->body->value = $dom->saveHTML();
+  }
+}
+
+
+/**
+ * Implements hook_help().
+ */
+function relnofollow_help($route_name, RouteMatchInterface $route_match)
+{
+  switch ($route_name) {
+    // Main module help for the relnofollow module.
+    case 'help.page.relnofollow':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('My Awesome Module') . '</p>';
+      return $output;
+    break;
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function relnofollow_theme()
+{
+  $theme = [];
+
+  return $theme;
+}
