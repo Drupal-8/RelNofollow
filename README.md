@@ -1,7 +1,7 @@
 # RelNofollow
 Free module for Drupal 8.
 
-You can use this module for automatically add **rel="nofollow"** to all external links inside an article during submition.
+You can use this module for automatically add **rel="nofollow"** to all external links inside an article or comment during submition.
 
 Installation
 -------------------------------
