@@ -9,4 +9,4 @@ INstallation
 
 Example: **/var/www/Drupal8/modules/kyna/**
 
-2) Enable the module from you admin panel. You can find the module with her name: **RelNofollow**.
+2) Enable the module from your admin panel. You can find the module by her name: **RelNofollow**.
