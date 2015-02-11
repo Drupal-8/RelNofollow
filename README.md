@@ -3,7 +3,7 @@ Free module for Drupal 8.
 
 You can use this module for automatically add **rel="nofollow"** to all external links inside an article during submition.
 
-INstallation
+Installation
 -------------------------------
 
 1) Download RelNofollow and move **kyna** folder inside yout **/modules** directory.
